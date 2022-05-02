@@ -1,0 +1,14 @@
+header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+main {
+    text-align: center;
+}
+
+.btn {
+    border-radius: 5px;
+    font-size: 1.5rem;
+}
