@@ -11,26 +11,18 @@
     <header>
         <button class="view-high-score" id="view-score">View high scores</button>
         <!-- active timer on the right (75 seconds)-->
-        <div id="timer">(timer placeholder)</div>
+        <div id="timer">Time: 0</div>
     </header>
 
     <!-- There is one main window that continuously refreshes after each click -->
     <main>
-        <h1 class="opening-title">Coding Quiz Challenge</h1>
-        <p class="open-message">Try to answer the following code-related questions within the time limit.
+        <div class="opening-container">
+            <h1 class="opening-title">Coding Quiz Challenge</h1>
+            <p class="open-message">Try to answer the following code-related questions within the time limit.
             Keep in mind that incorrect answers will penalize your score/time by ten seconds!</p>
-        <button class="btn" id="start-button">Start Quiz</button>
+            <button class="btn" id="start-button">Start Quiz</button>
+        </div>
 
-    <!-- Questions (and answers) to include in quiz:
-        Commonly used data types do NOT include (strings, booleans, alerts*, numbers)
-        The condition in an if/else statement is enclosed with (quotes, curly brackets, parenthesis*, square brackets)
-        Arrays in Javascript can be used to store (numbers and strings, other arrays, booleans, all of the above*)
-        String values must be enclosed within ___  when being assigned to variables. (commas, curly brackets, quotes*, parenthesis)
-        A very useful tool used during development and debugging for printing content to the debugger is (JavaScript, terminal/bash, for loops, console.log*)
-
-        - answers are numbered
-        - I am informed when previous question was "Correct!" or "Wrong!" 
-    -->
     <!-- Closing message:
     (first screen) All done! / Your final score is " ". / Enter initials [_____] Submit (button)
     (second screen) High Scores / (list) / Go back (button) Clear high scores (button) -->
