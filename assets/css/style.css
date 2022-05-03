@@ -13,6 +13,15 @@ main {
     text-align: center;
 }
 
+.open-message {
+    font-size: 1.3em;
+}
+
+.question {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
 .btn {
     border-radius: 5px;
     font-size: 1.5rem;
