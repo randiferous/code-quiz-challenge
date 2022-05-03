@@ -15,7 +15,7 @@
 // document.getElementById("start-button").addEventListener("click", timeScore);
 
 
-El = document.querySelector(".opening-container");
+containerEl = document.querySelector(".opening-container");
 responseEl = document.querySelector(".answer-response");
 
 var quizContainerEl = document.createElement("div");
@@ -160,10 +160,12 @@ var wrongAnswerFive = function () {
     // GameOver ();
 }
 
+document.getElementById("start-button").addEventListener("click", beginQuiz);
+
 // Game Over
 // var GameOver = function () {}
 
-document.getElementById("start-button").addEventListener("click", beginQuiz);
+
 
 // do questions and answers need to be stored in array? And if so, are they objects?
 
