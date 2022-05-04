@@ -1,23 +1,11 @@
-// clicking "Start Quiz" button activates timer
+// do questions and answers need to be stored in array? And if so, are they objects?
 
-
-// var timeScore = function() {
-
-//     var countdown = seconds - 0;
-
-//     document.getElementById("timer").innerHTML = "Time: " + countdown;
-
-//     if (seconds <= 0) {
-//         clearInterval(timeScore);
-//     }
-// };
-
-// document.getElementById("start-button").addEventListener("click", timeScore);
-
+// how to connect wrong answer to timer? (remaining time is the score)
 
 containerEl = document.querySelector(".opening-container");
 responseEl = document.querySelector(".answer-response");
 
+var timerEl = document.getElementById('timer');
 var quizContainerEl = document.createElement("div");
 var questionEl = document.createElement("h1");
 questionEl.className = "question";
@@ -31,6 +19,24 @@ var answerChoiceThree = document.createElement("button");
 answerChoiceThree.className = ("btn");
 var answerChoiceFour = document.createElement("button");
 answerChoiceFour.className = ("btn");
+var closingContainerEl = document.createElement("div");
+var highScoreContainer = document.createElement("div");
+
+// Countdown Timer
+var countdown = function() {
+    var timeLeft = 75;
+    var timeInterval = setInterval(function() {
+        if (timeLeft > 0) {
+            timerEl.textContent = 'Time: ' + timeLeft;
+            timeLeft--;
+        }
+        else {
+            timerEl.textContent = 'Time: 0';
+            clearInterval(timeInterval);
+            GameOver();
+        }
+    }, 1000);
+}
 
 // when Start Quiz is clicked, first question shows up:
 var beginQuiz = function() {
@@ -64,7 +70,9 @@ var rightAnswer = function() {
 }
 var wrongAnswer = function() {
     responseEl.textContent = "Response to Question #1: Wrong";
+    timeLeft - 10;
     questionTwo ();
+
     // remove 10 seconds from Timer
 }
 
@@ -153,22 +161,55 @@ var questionFive = function () {
 
 var rightAnswerFive = function () {
     responseEl.textContent = "Response to Question #5: Correct";
-    // GameOver ();
+    GameOver ();
 }
 var wrongAnswerFive = function () {
     responseEl.textContent = "Response to Question #5: Wrong";
-    // GameOver ();
+    GameOver ();
 }
 
-document.getElementById("start-button").addEventListener("click", beginQuiz);
-
 // Game Over
-// var GameOver = function () {}
+var GameOver = function () {
+    var closingHeaderEl = document.createElement("h1");
+    closingHeaderEl.textContent = "All done!";
+    closingContainerEl.appendChild(closingHeaderEl);
 
+    var closingCommentEl = document.createElement("p");
+    closingCommentEl.className = ("closing-message");
+    closingCommentEl.textContent = "Your final score is ...";
+    closingContainerEl.appendChild(closingCommentEl);
 
+    var closingFormEl = document.createElement("form");
 
-// do questions and answers need to be stored in array? And if so, are they objects?
+    enterInitials = document.createElement("p");
+    enterInitials.className = ("closing-message");
+    enterInitials.textContent = "Enter initials:";
+    closingFormEl.appendChild(enterInitials);
 
-// how to connect wrong answer to timer? (remaining time is the score)
+    var inputInitials = document.createElement("input");
+    inputInitials.className = ("input-form");
+    closingFormEl.appendChild(inputInitials);
+    var submitButtonEl = document.createElement("button");
+    submitButtonEl.className = ("submit-btn");
+    submitButtonEl.textContent = "Submit";
+    closingFormEl.appendChild(submitButtonEl);
 
-// we need to store high scores, as well as initial with the score
+    closingContainerEl.appendChild(closingFormEl);
+    quizContainerEl.replaceWith(closingContainerEl);
+    
+    // figure out way to link initial with timescore and post onto list
+    // submitButtonEl.addEventListener("submit", highScore);
+}
+// High Scores / (list) / Go back (button) Clear high scores (button), preventdefault not working
+// High Score
+// var highScore = function (event) {
+//     event.preventDefault(); 
+//     highScoreHeader = document.createElement("h1");
+//     highScoreHeader.textContent = "High Scores";
+//     highScoreContainer.appendChild.highScoreHeader;
+
+//     closingContainerEl.replaceWith(highScoreContainer);
+// }
+
+document.getElementById("start-button").addEventListener("click", countdown);
+document.getElementById("start-button").addEventListener("click", beginQuiz);
