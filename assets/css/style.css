@@ -75,3 +75,14 @@ input {
     background-color: black;
     color: white;
 }
+
+.high-score-list {
+    padding-inline-start: 0px;
+    font-size: 1.3em;
+}
+
+.high-score-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}

@@ -1,7 +1,3 @@
-// do questions and answers need to be stored in array? And if so, are they objects?
-
-// how to connect wrong answer to timer? (remaining time is the score)
-
 containerEl = document.querySelector(".opening-container");
 responseEl = document.querySelector(".answer-response");
 
@@ -23,9 +19,9 @@ var closingContainerEl = document.createElement("div");
 var highScoreContainer = document.createElement("div");
 
 // Countdown Timer
-var countdown = function() {
+var countdown = function () {
     var timeLeft = 75;
-    var timeInterval = setInterval(function() {
+    var timeInterval = setInterval(function () {
         if (timeLeft > 0) {
             timerEl.textContent = 'Time: ' + timeLeft;
             timeLeft--;
@@ -35,20 +31,22 @@ var countdown = function() {
             clearInterval(timeInterval);
             GameOver();
         }
+        // return timeInterval;
     }, 1000);
+    // return timeInterval;
 }
 
 // when Start Quiz is clicked, first question shows up:
-var beginQuiz = function() {
+var beginQuiz = function () {
     questionEl.textContent = "Question #1: Commonly used data types do NOT include:";
     quizContainerEl.appendChild(questionEl);
 
     answerChoiceOne.textContent = "strings";
     answerListEl.appendChild(answerChoiceOne);
-    
+
     answerChoiceTwo.textContent = "booleans";
     answerListEl.appendChild(answerChoiceTwo);
-    
+
     answerChoiceThree.textContent = "alerts";
     answerListEl.appendChild(answerChoiceThree);
 
@@ -64,20 +62,20 @@ var beginQuiz = function() {
     answerChoiceFour.addEventListener("click", wrongAnswer);
 }
 
-var rightAnswer = function() {
+var rightAnswer = function () {
     responseEl.textContent = "Response to Question #1: Correct";
-    questionTwo ();
+    questionTwo();
 }
-var wrongAnswer = function() {
+var wrongAnswer = function (timeLeft) {
     responseEl.textContent = "Response to Question #1: Wrong";
-    timeLeft - 10;
-    questionTwo ();
+    // var timeInterval = timeInterval - 10;
+    questionTwo();
 
-    // remove 10 seconds from Timer
+    // remove 10 seconds from Timer (how?)
 }
 
 // Second Question
-var questionTwo = function() {
+var questionTwo = function () {
     questionEl.textContent = "Question #2: The condition in an if/else statement is enclosed with:";
     answerChoiceOne.textContent = "quotes";
     answerChoiceTwo.textContent = "parenthesis";
@@ -92,11 +90,11 @@ var questionTwo = function() {
 
 var rightAnswerTwo = function () {
     responseEl.textContent = "Response to Question #2: Correct";
-    questionThree ();
+    questionThree();
 }
 var wrongAnswerTwo = function () {
     responseEl.textContent = "Response to Question #2: Wrong";
-    questionThree ();
+    questionThree();
 }
 
 // Third Question
@@ -115,11 +113,11 @@ var questionThree = function () {
 
 var rightAnswerThree = function () {
     responseEl.textContent = "Response to Question #3: Correct";
-    questionFour ();
+    questionFour();
 }
 var wrongAnswerThree = function () {
     responseEl.textContent = "Response to Question #3: Wrong";
-    questionFour ();
+    questionFour();
 }
 
 // Fourth Question
@@ -138,11 +136,11 @@ var questionFour = function () {
 
 var rightAnswerFour = function () {
     responseEl.textContent = "Response to Question #4: Correct";
-    questionFive ();
+    questionFive();
 }
 var wrongAnswerFour = function () {
     responseEl.textContent = "Response to Question #4: Wrong";
-    questionFive ();
+    questionFive();
 }
 
 // Fifth Question
@@ -161,11 +159,11 @@ var questionFive = function () {
 
 var rightAnswerFive = function () {
     responseEl.textContent = "Response to Question #5: Correct";
-    GameOver ();
+    GameOver();
 }
 var wrongAnswerFive = function () {
     responseEl.textContent = "Response to Question #5: Wrong";
-    GameOver ();
+    GameOver();
 }
 
 // Game Over
@@ -196,20 +194,50 @@ var GameOver = function () {
 
     closingContainerEl.appendChild(closingFormEl);
     quizContainerEl.replaceWith(closingContainerEl);
-    
-    // figure out way to link initial with timescore and post onto list
-    // submitButtonEl.addEventListener("submit", highScore);
-}
-// High Scores / (list) / Go back (button) Clear high scores (button), preventdefault not working
-// High Score
-// var highScore = function (event) {
-//     event.preventDefault(); 
-//     highScoreHeader = document.createElement("h1");
-//     highScoreHeader.textContent = "High Scores";
-//     highScoreContainer.appendChild.highScoreHeader;
 
-//     closingContainerEl.replaceWith(highScoreContainer);
-// }
+    // figure out way to link initial with timescore and post onto list, maybe use an array
+    closingFormEl.addEventListener("submit", highScore);
+}
+
+// High Scores
+var highScore = function (event) {
+    event.preventDefault();
+    document.getElementById("view-score").disabled = true;
+
+    containerEl.replaceWith(highScoreContainer);
+
+    highScoreHeader = document.createElement("h1");
+    highScoreHeader.textContent = "High Scores";
+    highScoreContainer.appendChild(highScoreHeader);
+
+    var highScoreList = document.createElement("ol");
+    highScoreList.className = ("high-score-list");
+    listItem = document.createElement("li");
+    listItem.textContent = "placeholder";
+    highScoreList.appendChild(listItem);
+    highScoreContainer.appendChild(highScoreList);
+
+    highScoreButtons = document.createElement("div");
+    highScoreButtons.className = "high-score-buttons";
+
+    var goBack = document.createElement("button");
+    goBack.className = ("btn");
+    goBack.textContent = "Go back";
+    highScoreButtons.appendChild(goBack);
+    var resetButton = document.createElement("button");
+    resetButton.className = ("btn");
+    resetButton.textContent = "Clear high scores";
+    highScoreButtons.appendChild(resetButton);
+
+    highScoreContainer.appendChild(highScoreButtons);
+
+    responseEl.textContent = "";
+
+    closingContainerEl.replaceWith(highScoreContainer);
+
+    // goBack.addEventListener("click",); <---having issues with this
+}
 
 document.getElementById("start-button").addEventListener("click", countdown);
 document.getElementById("start-button").addEventListener("click", beginQuiz);
+document.getElementById("view-score").addEventListener("click", highScore);
