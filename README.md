@@ -9,7 +9,7 @@ There were many instances throughout this challenge where I got stuck, and after
 - A major aspect of this challenge was the balance between figuring out which solution made sense and the solution that would be most efficient. While there may have been other approaches that would've resulted in shorter code, my approach made sense to me and still worked. One of my future goals is to improve my code refactoring skills, but for now, I decided to prioritize functionality.
 - Sometimes, I found it helpful to walk away from the screen and think through my problem in a different location. This would relax and reset my mind so that I can better evaluate the problem and even come up with creative solutions.
 
-Here is a link to the deployed application: 
+Here is a link to the deployed application: https://randiferous.github.io/code-quiz-challenge/
 
 Below are snapshots of various dynamically generated HTML sections throughout the quiz:
 
