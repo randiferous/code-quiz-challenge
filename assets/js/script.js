@@ -1,6 +1,10 @@
 containerEl = document.querySelector(".opening-container");
 responseEl = document.querySelector(".answer-response");
 
+var scoreIdCounter = 0;
+var timeLeft = 75;
+
+var scores = [];
 var timerEl = document.getElementById('timer');
 var quizContainerEl = document.createElement("div");
 var questionEl = document.createElement("h1");
@@ -16,11 +20,10 @@ answerChoiceThree.className = ("btn");
 var answerChoiceFour = document.createElement("button");
 answerChoiceFour.className = ("btn");
 var closingContainerEl = document.createElement("div");
-var highScoreContainer = document.createElement("div");
+var viewScoreContainer = document.createElement("div");
 
 // Countdown Timer
 var countdown = function () {
-    var timeLeft = 75;
     var timeInterval = setInterval(function () {
         if (timeLeft > 0) {
             timerEl.textContent = 'Time: ' + timeLeft;
@@ -29,11 +32,9 @@ var countdown = function () {
         else {
             timerEl.textContent = 'Time: 0';
             clearInterval(timeInterval);
-            GameOver();
+            gameOver();
         }
-        // return timeInterval;
     }, 1000);
-    // return timeInterval;
 }
 
 // when Start Quiz is clicked, first question shows up:
@@ -66,12 +67,10 @@ var rightAnswer = function () {
     responseEl.textContent = "Response to Question #1: Correct";
     questionTwo();
 }
-var wrongAnswer = function (timeLeft) {
+var wrongAnswer = function () {
     responseEl.textContent = "Response to Question #1: Wrong";
-    // var timeInterval = timeInterval - 10;
+    timeLeft = timeLeft - 10;
     questionTwo();
-
-    // remove 10 seconds from Timer (how?)
 }
 
 // Second Question
@@ -82,18 +81,20 @@ var questionTwo = function () {
     answerChoiceThree.textContent = "curly brackets";
     answerChoiceFour.textContent = "square brackets";
 
-    answerChoiceOne.addEventListener("click", wrongAnswerTwo);
+    answerChoiceOne.addEventListener("click", questionThree);
     answerChoiceTwo.addEventListener("click", rightAnswerTwo);
     answerChoiceThree.addEventListener("click", wrongAnswerTwo);
-    answerChoiceFour.addEventListener("click", wrongAnswerTwo);
+    answerChoiceFour.addEventListener("click", questionThree);
 }
 
 var rightAnswerTwo = function () {
     responseEl.textContent = "Response to Question #2: Correct";
+    timeLeft = timeLeft + 10
     questionThree();
 }
 var wrongAnswerTwo = function () {
     responseEl.textContent = "Response to Question #2: Wrong";
+    timeLeft = timeLeft - 10;
     questionThree();
 }
 
@@ -105,18 +106,20 @@ var questionThree = function () {
     answerChoiceThree.textContent = "booleans";
     answerChoiceFour.textContent = "all of the above";
 
-    answerChoiceOne.addEventListener("click", wrongAnswerThree);
+    answerChoiceOne.addEventListener("click", questionFour);
     answerChoiceTwo.addEventListener("click", wrongAnswerThree);
-    answerChoiceThree.addEventListener("click", wrongAnswerThree);
+    answerChoiceThree.addEventListener("click", questionFour);
     answerChoiceFour.addEventListener("click", rightAnswerThree);
 }
 
 var rightAnswerThree = function () {
     responseEl.textContent = "Response to Question #3: Correct";
+    timeLeft = timeLeft + 10
     questionFour();
 }
 var wrongAnswerThree = function () {
     responseEl.textContent = "Response to Question #3: Wrong";
+    timeLeft = timeLeft - 10;
     questionFour();
 }
 
@@ -128,18 +131,20 @@ var questionFour = function () {
     answerChoiceThree.textContent = "quotes";
     answerChoiceFour.textContent = "parenthesis";
 
-    answerChoiceOne.addEventListener("click", wrongAnswerFour);
-    answerChoiceTwo.addEventListener("click", wrongAnswerFour);
+    answerChoiceOne.addEventListener("click", questionFive);
+    answerChoiceTwo.addEventListener("click", questionFive);
     answerChoiceThree.addEventListener("click", rightAnswerFour);
     answerChoiceFour.addEventListener("click", wrongAnswerFour);
 }
 
 var rightAnswerFour = function () {
     responseEl.textContent = "Response to Question #4: Correct";
+    timeLeft = timeLeft + 10
     questionFive();
 }
 var wrongAnswerFour = function () {
     responseEl.textContent = "Response to Question #4: Wrong";
+    timeLeft = timeLeft - 10;
     questionFive();
 }
 
@@ -152,22 +157,24 @@ var questionFive = function () {
     answerChoiceFour.textContent = "for loops";
 
     answerChoiceOne.addEventListener("click", rightAnswerFive);
-    answerChoiceTwo.addEventListener("click", wrongAnswerFive);
+    answerChoiceTwo.addEventListener("click", gameOver);
     answerChoiceThree.addEventListener("click", wrongAnswerFive);
-    answerChoiceFour.addEventListener("click", wrongAnswerFive);
+    answerChoiceFour.addEventListener("click", gameOver);
 }
 
 var rightAnswerFive = function () {
     responseEl.textContent = "Response to Question #5: Correct";
-    GameOver();
+    timeLeft = timeLeft + 10
+    gameOver();
 }
 var wrongAnswerFive = function () {
     responseEl.textContent = "Response to Question #5: Wrong";
-    GameOver();
+    timeLeft = timeLeft - 10;
+    gameOver();
 }
 
 // Game Over
-var GameOver = function () {
+var gameOver = function () {
     var closingHeaderEl = document.createElement("h1");
     closingHeaderEl.textContent = "All done!";
     closingContainerEl.appendChild(closingHeaderEl);
@@ -195,49 +202,65 @@ var GameOver = function () {
     closingContainerEl.appendChild(closingFormEl);
     quizContainerEl.replaceWith(closingContainerEl);
 
-    // figure out way to link initial with timescore and post onto list, maybe use an array
-    closingFormEl.addEventListener("submit", highScore);
+    closingFormEl.addEventListener("submit", saveScore);
 }
 
-// High Scores
-var highScore = function (event) {
-    event.preventDefault();
+var saveScore = function (event) {
+    event.preventDefault();  
+    var initialInput = document.querySelector("input[class='input-form']").value;
+    var scoreObj = { initial: initialInput };
+    scoreObj.id = scoreIdCounter;
+    scores.push(scoreObj);
+    localStorage.setItem("scores", JSON.stringify(scores))
+    viewScore(scoreObj);
+}
+
+var loadScore = function() {
+    var savedScore = localStorage.getItem("scores");
+    if (!savedScore) {
+        return false;
+    }
+    savedScore = JSON.parse(savedScore);
+    for (var i = 0; i < savedScore.length; i++) {
+        viewScore(savedScore[i]);
+    }
+}
+
+// View Scores
+var viewScore = function (scores) {
+
     document.getElementById("view-score").disabled = true;
 
-    containerEl.replaceWith(highScoreContainer);
+    containerEl.replaceWith(viewScoreContainer);
 
-    highScoreHeader = document.createElement("h1");
-    highScoreHeader.textContent = "High Scores";
-    highScoreContainer.appendChild(highScoreHeader);
+    viewScoreHeader = document.createElement("h1");
+    viewScoreHeader.textContent = "View Scores";
+    viewScoreContainer.appendChild(viewScoreHeader);
 
-    var highScoreList = document.createElement("ol");
-    highScoreList.className = ("high-score-list");
+    var viewScoreList = document.createElement("ul");
+    viewScoreList.className = ("view-score-list");
     listItem = document.createElement("li");
-    listItem.textContent = "placeholder";
-    highScoreList.appendChild(listItem);
-    highScoreContainer.appendChild(highScoreList);
+    listItem.innerHTML = scores.initial;
 
-    highScoreButtons = document.createElement("div");
-    highScoreButtons.className = "high-score-buttons";
+    viewScoreList.appendChild(listItem);
+    viewScoreContainer.appendChild(viewScoreList);
 
     var goBack = document.createElement("button");
     goBack.className = ("btn");
     goBack.textContent = "Go back";
-    highScoreButtons.appendChild(goBack);
-    var resetButton = document.createElement("button");
-    resetButton.className = ("btn");
-    resetButton.textContent = "Clear high scores";
-    highScoreButtons.appendChild(resetButton);
-
-    highScoreContainer.appendChild(highScoreButtons);
+    viewScoreContainer.appendChild(goBack);
 
     responseEl.textContent = "";
 
-    closingContainerEl.replaceWith(highScoreContainer);
+    closingContainerEl.replaceWith(viewScoreContainer);
 
-    // goBack.addEventListener("click",); <---having issues with this
+    goBack.addEventListener("click", startPage);
+}
+
+startPage = function () {
+    location.reload();
 }
 
 document.getElementById("start-button").addEventListener("click", countdown);
 document.getElementById("start-button").addEventListener("click", beginQuiz);
-document.getElementById("view-score").addEventListener("click", highScore);
+document.getElementById("view-score").addEventListener("click", loadScore);

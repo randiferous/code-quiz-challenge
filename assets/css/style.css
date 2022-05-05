@@ -4,7 +4,7 @@ header {
     padding: 10px;
 }
 
-.view-high-score:hover {
+.view-scores:hover {
     background-color: black;
     color: white;
 }
@@ -76,13 +76,7 @@ input {
     color: white;
 }
 
-.high-score-list {
+.view-score-list {
     padding-inline-start: 0px;
     font-size: 1.3em;
-}
-
-.high-score-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
 }
