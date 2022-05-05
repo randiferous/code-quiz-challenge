@@ -2,7 +2,7 @@ containerEl = document.querySelector(".opening-container");
 
 var scoreIdCounter = 0;
 var timeLeft = 75;
-let timeInterval;
+var timeInterval;
 
 var scores = [];
 var timerEl = document.getElementById('timer');
@@ -24,7 +24,7 @@ var viewScoreContainer = document.createElement("div");
 
 // Countdown Timer
 var countdown = function () {
-    var timeInterval = setInterval(function () {
+    timeInterval = setInterval(function () {
         if (timeLeft > 0) {
             timerEl.textContent = 'Time: ' + timeLeft;
             timeLeft--;
@@ -223,7 +223,7 @@ var viewScore = function (scoreObj) {
     containerEl.replaceWith(viewScoreContainer);
 
     viewScoreHeader = document.createElement("h1");
-    viewScoreHeader.textContent = "View Scores";
+    viewScoreHeader.textContent = "View Score";
     viewScoreContainer.appendChild(viewScoreHeader);
 
     var viewScoreList = document.createElement("ul");
