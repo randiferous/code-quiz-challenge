@@ -1,5 +1,5 @@
 # code-quiz-challenge
-The purpose of this challenge was to build upon our foundational knowledge of JavaScript by applying Web APIs that enable the dynamic generation of HTML and CSS.
+The purpose of this challenge was to build upon our foundational knowledge of JavaScript by applying Web APIs that enable the dynamic generation of HTML and CSS. We were introdcued to the concept of the DOM and had to figure how to use DOM properties in order create a Code Quiz that shows questions one at a time.
 
 Observations:
 - Very important to plan out the steps you will take to create this application. You cannot do certain steps before others. With that said, it is pretty much essential for you to work through this one step at a time.

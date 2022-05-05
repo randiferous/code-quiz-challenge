@@ -40,10 +40,6 @@ main {
     padding-inline-start: 0;
 }
 
-.answer-response {
-    font-style: italic;
-}
-
 form {
     display: flex;
     justify-content: center;

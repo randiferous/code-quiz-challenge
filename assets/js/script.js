@@ -1,8 +1,8 @@
 containerEl = document.querySelector(".opening-container");
-responseEl = document.querySelector(".answer-response");
 
 var scoreIdCounter = 0;
 var timeLeft = 75;
+let timeInterval;
 
 var scores = [];
 var timerEl = document.getElementById('timer');
@@ -59,16 +59,11 @@ var beginQuiz = function () {
 
     answerChoiceOne.addEventListener("click", wrongAnswer);
     answerChoiceTwo.addEventListener("click", wrongAnswer);
-    answerChoiceThree.addEventListener("click", rightAnswer);
+    answerChoiceThree.addEventListener("click", questionTwo);
     answerChoiceFour.addEventListener("click", wrongAnswer);
 }
 
-var rightAnswer = function () {
-    responseEl.textContent = "Response to Question #1: Correct";
-    questionTwo();
-}
 var wrongAnswer = function () {
-    responseEl.textContent = "Response to Question #1: Wrong";
     timeLeft = timeLeft - 10;
     questionTwo();
 }
@@ -88,12 +83,10 @@ var questionTwo = function () {
 }
 
 var rightAnswerTwo = function () {
-    responseEl.textContent = "Response to Question #2: Correct";
     timeLeft = timeLeft + 10
     questionThree();
 }
 var wrongAnswerTwo = function () {
-    responseEl.textContent = "Response to Question #2: Wrong";
     timeLeft = timeLeft - 10;
     questionThree();
 }
@@ -113,12 +106,10 @@ var questionThree = function () {
 }
 
 var rightAnswerThree = function () {
-    responseEl.textContent = "Response to Question #3: Correct";
     timeLeft = timeLeft + 10
     questionFour();
 }
 var wrongAnswerThree = function () {
-    responseEl.textContent = "Response to Question #3: Wrong";
     timeLeft = timeLeft - 10;
     questionFour();
 }
@@ -138,12 +129,10 @@ var questionFour = function () {
 }
 
 var rightAnswerFour = function () {
-    responseEl.textContent = "Response to Question #4: Correct";
     timeLeft = timeLeft + 10
     questionFive();
 }
 var wrongAnswerFour = function () {
-    responseEl.textContent = "Response to Question #4: Wrong";
     timeLeft = timeLeft - 10;
     questionFive();
 }
@@ -163,25 +152,24 @@ var questionFive = function () {
 }
 
 var rightAnswerFive = function () {
-    responseEl.textContent = "Response to Question #5: Correct";
     timeLeft = timeLeft + 10
     gameOver();
 }
 var wrongAnswerFive = function () {
-    responseEl.textContent = "Response to Question #5: Wrong";
     timeLeft = timeLeft - 10;
     gameOver();
 }
 
 // Game Over
 var gameOver = function () {
+    clearInterval(timeInterval);
     var closingHeaderEl = document.createElement("h1");
     closingHeaderEl.textContent = "All done!";
     closingContainerEl.appendChild(closingHeaderEl);
 
     var closingCommentEl = document.createElement("p");
     closingCommentEl.className = ("closing-message");
-    closingCommentEl.textContent = "Your final score is ...";
+    closingCommentEl.innerHTML = "Your final score is " + timeLeft;
     closingContainerEl.appendChild(closingCommentEl);
 
     var closingFormEl = document.createElement("form");
@@ -206,28 +194,29 @@ var gameOver = function () {
 }
 
 var saveScore = function (event) {
-    event.preventDefault();  
+    event.preventDefault();
     var initialInput = document.querySelector("input[class='input-form']").value;
-    var scoreObj = { initial: initialInput };
+    var scoreObj = { initial: initialInput, time: timeLeft, };
     scoreObj.id = scoreIdCounter;
     scores.push(scoreObj);
     localStorage.setItem("scores", JSON.stringify(scores))
     viewScore(scoreObj);
 }
 
-var loadScore = function() {
+var loadScore = function () {
     var savedScore = localStorage.getItem("scores");
     if (!savedScore) {
         return false;
     }
     savedScore = JSON.parse(savedScore);
+
     for (var i = 0; i < savedScore.length; i++) {
         viewScore(savedScore[i]);
     }
 }
 
 // View Scores
-var viewScore = function (scores) {
+var viewScore = function (scoreObj) {
 
     document.getElementById("view-score").disabled = true;
 
@@ -239,18 +228,17 @@ var viewScore = function (scores) {
 
     var viewScoreList = document.createElement("ul");
     viewScoreList.className = ("view-score-list");
-    listItem = document.createElement("li");
-    listItem.innerHTML = scores.initial;
 
+    listItem = document.createElement("li");
+    listItem.innerHTML = scoreObj.initial + ": " + scoreObj.time;
     viewScoreList.appendChild(listItem);
+
     viewScoreContainer.appendChild(viewScoreList);
 
     var goBack = document.createElement("button");
     goBack.className = ("btn");
     goBack.textContent = "Go back";
     viewScoreContainer.appendChild(goBack);
-
-    responseEl.textContent = "";
 
     closingContainerEl.replaceWith(viewScoreContainer);
 
